@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Helin 💘</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #ffd6e8, #d6f0ff);
+  overflow: hidden;
+}
+
+.slide {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.slide.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1, h2 {
+  color: #ff4f8b;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+}
+
+button {
+  padding: 14px 26px;
+  font-size: 1.3em;
+  border: none;
+  border-radius: 30px;
+  margin: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.yes {
+  background: #ff8fab;
+  color: white;
+}
+
+.no {
+  background: #ddd;
+  position: relative;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+img.photo {
+  max-width: 80%;
+  max-height: 60vh;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* falling hearts */
+.heart {
+  position: absolute;
+  font-size: 24px;
+  animation: fall 5s linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10vh); opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+/* cats */
+.cat {
+  position: absolute;
+  font-size: 36px;
+  animation: catPop 3s infinite;
+}
+
+@keyframes catPop {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.5) rotate(15deg); }
+}
+
+/* CONFETTI */
+.confetti {
+  position: absolute;
+  font-size: 22px;
+  animation: confetti 3s linear forwards;
+}
+
+@keyframes confetti {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="pop" src="https://cdn.pixabay.com/audio/2022/03/15/audio_3c2b90e32b.mp3"></audio>
+<audio id="meow" src="https://cdn.pixabay.com/audio/2021/08/04/audio_3b5f6e6c89.mp3"></audio>
+<audio id="win" src="https://cdn.pixabay.com/audio/2022/10/18/audio_5c3b6d4a92.mp3"></audio>
+
+<!-- SLIDES -->
+
+<div class="slide active">
+  <h1>Hi pretty baby 💕</h1>
+  <p>(yes you, Helin 😌)</p>
+  <button class="yes" onclick="next()">hi mamas</button>
+</div>
+
+<div class="slide">
+  <h1>I have a serious question</h1>
+  <p>like VERY serious</p>
+  <button class="yes" onclick="next()">okay 😳</button>
+</div>
+
+<div class="slide">
+  <h2>Do you love me?</h2>
+  <button class="yes" onclick="next()">YES 💖</button>
+  <button class="no" onmouseover="run(this)">no</button>
+</div>
+
+<div class="slide">
+  <img src="photo1.jpg" class="photo">
+  <h2>look at us tho…</h2>
+  <button class="yes" onclick="next()">okay we cute</button>
+</div>
+
+<div class="slide">
+  <h2>MA BABYYY MAAA BABYYYY</h2>
+  <p>charlie charlie jealous rn 👻</p>
+  <button class="yes" onclick="next()">STOP 😭</button>
+</div>
+
+<div class="slide">
+  <img src="photo2.jpg" class="photo">
+  <h2>be honest mamas</h2>
+  <button class="yes" onclick="next()">fine 😐</button>
+</div>
+
+<div class="slide">
+  <h2>Will you be my Valentine? 💘</h2>
+  <button class="yes" onclick="next()">YES YES YES</button>
+  <button class="no" onclick="disappear(this)">no</button>
+</div>
+
+<div class="slide">
+  <img src="photo3.jpg" class="photo">
+  <h2>this could be us fr</h2>
+  <p>(clapped cheeks energy)</p>
+  <button class="yes" onclick="next()">LMFAOOO</button>
+</div>
+
+<div class="slide">
+  <h2>I love you Helin 💗</h2>
+  <p>i love your dle gawra 🫶</p>
+  <button class="yes" onclick="finale()">I love you too</button>
+</div>
+
+<div class="slide">
+  <h1>HAPPY VALENTINE’S DAY 💞</h1>
+  <p>forever my pretty baby</p>
+</div>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function next() {
+  document.getElementById("pop").play();
+  slides[index].classList.remove("active");
+  index++;
+  slides[index].classList.add("active");
+}
+
+function run(btn) {
+  document.getElementById("meow").play();
+  btn.style.left = Math.random() * 200 - 100 + "px";
+  btn.style.top = Math.random() * 200 - 100 + "px";
+}
+
+function disappear(btn) {
+  btn.style.display = "none";
+}
+
+function finale() {
+  document.getElementById("win").play();
+  next();
+  launchConfetti();
+}
+
+// hearts rain
+setInterval(() => {
+  let heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "💗";
+  heart.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}, 300);
+
+// cats chaos
+setInterval(() => {
+  let cat = document.createElement("div");
+  cat.className = "cat";
+  cat.innerText = ["🐱","😹","🐈","🙀"][Math.floor(Math.random()*4)];
+  cat.style.left = Math.random() * 90 + "vw";
+  cat.style.top = Math.random() * 90 + "vh";
+  document.body.appendChild(cat);
+  setTimeout(() => cat.remove(), 3000);
+}, 2000);
+
+// CONFETTI EXPLOSION
+function launchConfetti() {
+  for (let i = 0; i < 120; i++) {
+    let c = document.createElement("div");
+    c.className = "confetti";
+    c.innerText = "💖";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.top = "-10px";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+</script>
+
+</body>
+</html>
